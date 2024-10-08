@@ -1,0 +1,56 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Django migrations
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Database files
+db.sqlite3
+*.sqlite3
+
+# Environment variables
+.env
+
+# Static files
+/static/
+media/
+
+# Python virtual environment
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE specific files
+*.swp
+*.sublime-workspace
+*.sublime-project
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Django secret key
+*.key
+
+# Caches
+*.cache
+
+# Test files
+coverage.xml
+nosetests.xml
+test_*.xml
+results/
+
+# Other files
+.DS_Store
+Thumbs.db

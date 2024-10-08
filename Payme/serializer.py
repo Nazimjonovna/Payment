@@ -1,22 +1,56 @@
+from django.conf import settings
+
 from rest_framework import serializers
 
-class Paycomserializer(serializers.Serializer):
-    CHECK_PERFORM_TRANSACTION = 'CheckPerformTransaction'
-    CREATE_TRANSACTION = 'CreateTransaction'
-    PERFORM_TRANSACTION = 'PerformTransaction'
-    CHECK_TRANSACTION = 'CheckTransaction'
-    CANCEL_TRANSACTION = 'CancelTransaction'
-    GET_STATEMENT = 'GetStatement'
+from Payme.models import Order
+from Payme.models import MerchatTransactionsModel
+from Payme.errors.exceptions import IncorrectAmount
+from Payme.errors.exceptions import PerformTransactionDoesNotExist
 
-    METHODS = (
-        (CHECK_PERFORM_TRANSACTION, CHECK_PERFORM_TRANSACTION),
-        (CREATE_TRANSACTION, CREATE_TRANSACTION),
-        (PERFORM_TRANSACTION, PERFORM_TRANSACTION),
-        (CHECK_TRANSACTION, CHECK_TRANSACTION),
-        (CANCEL_TRANSACTION, CANCEL_TRANSACTION),
-        (GET_STATEMENT, GET_STATEMENT),
-    )
-    
-    id = serializers.IntegerField()
-    method = serializers.ChoiceField(choices=METHODS)
-    params = serializers.JSONField()
+
+class MerchatTransactionsModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model: MerchatTransactionsModel = MerchatTransactionsModel
+        fields: str = "__all__"
+
+    def validate(self, data):
+        """
+        Validate the data given to the MerchatTransactionsModel.
+        """
+        if data.get("order_id") is not None:
+            try:
+                order = Order.objects.get(
+                    id=data['order_id']
+                )
+                if order.amount != int(data['amount']):
+                    raise IncorrectAmount()
+
+            except IncorrectAmount:
+                raise IncorrectAmount()
+
+        return data
+
+    def validate_amount(self, amount) -> int:
+        """
+        Validator for Transactions Amount
+        """
+        if amount is not None:
+            if int(amount) <= settings.PAYME.get("PAYME_MIN_AMOUNT"):
+                raise IncorrectAmount()
+
+        return amount
+
+    def validate_order_id(self, order_id) -> int:
+        """
+        Use this method to check if a transaction is allowed to be executed.
+        :param order_id: string -> Order Indentation.
+        """
+        try:
+            Order.objects.get(
+                id=order_id,
+            )
+        except Order.DoesNotExist:
+            raise PerformTransactionDoesNotExist()
+
+        return order_id

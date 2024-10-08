@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
+
+env = Env()
+env.read_env() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +29,14 @@ SECRET_KEY = 'django-insecure-23gm2$e%b09rqid$-+uo#8vsb$10w&)&%zcxjh9ps+sbxn9b(j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load the .env file
+
+NGROK_URL = os.getenv("NGROK_URL")
+
+ALLOWED_HOSTS = ["d320-45-150-24-108.ngrok-free.app", '*',  NGROK_URL]
 
 
 # Application definition
@@ -37,9 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'clickuz',
+    'drf_yasg',
     'rest_framework',
-    'Payme',
     'Click',
+    'Payme',
 ]
 
 MIDDLEWARE = [
@@ -125,10 +138,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PAYCOM_SETTINGS = {
-    'KACCA_ID':TOKEN,
-    'SECRET_KEY':SECRET_KEY,
-    'ACCOUNTS':{
-        'KEY':'order_id'
-    }
+PAYME: dict = {
+    'PAYME_ID': 'payme-id', # merchant_id
+    'PAYME_KEY': 'payme-key', # merchant_key
+    'PAYME_URL': 'payme-checkout-url',
+    'PAYME_CALL_BACK_URL': 'your-callback-url', # merchant api callback url
+    'PAYME_MIN_AMOUNT': 'payme-min-amount', # integer field
+    'PAYME_ACCOUNT': 'order-id',  # payme kassa rekviziti
+}
+KASSA_ID = env.str("KASSA_ID") 
+SECRET_KEY = env.str("SECRET_KEY") 
+PAYCOM_ID = env.str("PAYCOM_ID")
+PAYCOM_KEY = env.str("PAYCOM_KEY")
+
+
+CLICK_SETTINGS = {
+    'service_id': os.getenv('SERVICE_ID'),
+    'merchant_id': os.getenv('MERCHANT_ID'),
+    'secret_key': os.getenv('SECRET_KEY'),
+    'merchant_user': os.getenv('MERCHANT_USER')
 }

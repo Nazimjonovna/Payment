@@ -1,24 +1,30 @@
 from django.db import models
 
-Status = (
-    ('Prosessing' , 'Prosessing'),
-    ("Success", "Success"),
-    ("Failed", 'Failed'),
-    ("Canceled", "Canceled")
-)
 
-# Create your models here.
-class Payme(models.Model):
-    phone = models.CharField(max_length = 13)
-    amount = models.CharField(max_length = 200)
-    merchant_id = models.CharField(max_length = 500)
-    order_key = models.CharField(max_length = 200, null = True)
-    state = models.IntegerField()
-    status = models.CharField(max_length = 200, choices = Status)
-    trans_date = models.DateTimeField(auto_now = True)
-    cancelde_time = models.DateTimeField(auto_now = True)
-    reason = models.IntegerField(null = True)
+class MerchatTransactionsModel(models.Model):
+    _id = models.CharField(max_length=255, null=True, blank=False)
+    transaction_id = models.CharField(max_length=255, null=True, blank=False)
+    order_id = models.BigIntegerField(null=True, blank=True)
+    amount = models.FloatField(null=True, blank=True)
+    time = models.BigIntegerField(null=True, blank=True)
+    perform_time = models.BigIntegerField(null=True, default=0)
+    cancel_time = models.BigIntegerField(null=True, default=0)
+    state = models.IntegerField(null=True, default=1)
+    reason = models.CharField(max_length=255, null=True, blank=True)
+    created_at_ms = models.CharField(max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self._id)
 
 
-    def __str__(self) -> str:
-        return f'{self.phone} --- {self.status}'
+class Order(models.Model):
+    amount = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "ORDER ID: {order_id}".format(
+            order_id=self.id
+        )
