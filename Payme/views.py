@@ -57,10 +57,7 @@ class MerchantAPIView(APIView):
 
     @staticmethod
     def get_paycom_method_by_name(incoming_method: str) -> object:
-        """
-        Use this static method to get the paycom method by name.
-        :param incoming_method: string -> incoming method name
-        """
+        print("method: ", incoming_method)
         available_methods: dict = {
             "CheckTransaction": CheckTransaction,
             "CreateTransaction": CreateTransaction,
@@ -80,7 +77,6 @@ class MerchantAPIView(APIView):
             raise MethodNotFound(error_message=error_message)
 
         merchant_method = MerchantMethod()
-
         return merchant_method
 
     @staticmethod
@@ -113,7 +109,6 @@ class MerchantAPIView(APIView):
             raise PermissionDenied(error_message=error_message)
 
         merchant_key = password.split(':')[-1]
-
         if merchant_key == settings.PAYME.get('PAYME_KEY'):
             is_payme = True
 

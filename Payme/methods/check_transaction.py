@@ -13,7 +13,7 @@ class CheckTransaction:
         )
         serializer.is_valid(raise_exception=True)
         clean_data: dict = serializer.validated_data
-
+        
         try:
             logged_message = "started check transaction in db"
             transaction = \

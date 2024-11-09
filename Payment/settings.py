@@ -138,14 +138,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PAYME: dict = {
-    'PAYME_ID': 'payme-id', # merchant_id
-    'PAYME_KEY': 'payme-key', # merchant_key
-    'PAYME_URL': 'payme-checkout-url',
-    'PAYME_CALL_BACK_URL': 'your-callback-url', # merchant api callback url
-    'PAYME_MIN_AMOUNT': 'payme-min-amount', # integer field
-    'PAYME_ACCOUNT': 'order-id',  # payme kassa rekviziti
-}
+
 KASSA_ID = env.str("KASSA_ID") 
 SECRET_KEY = env.str("SECRET_KEY") 
 PAYCOM_ID = env.str("PAYCOM_ID")
@@ -157,4 +150,12 @@ CLICK_SETTINGS = {
     'merchant_id': os.getenv('MERCHANT_ID'),
     'secret_key': os.getenv('SECRET_KEY'),
     'merchant_user': os.getenv('MERCHANT_USER')
+}
+
+PAYME = {
+    'PAYME_ID': '660a7f415b347a44404cd66e',
+    'PAYME_KEY': 'U#X8IHnx&nszoSo%sJ?CJ5rkYGUsvuSBEC7t',
+    'PAYME_MIN_AMOUNT': '1', 
+    'PAYME_ACCOUNT': "user_id" ,
+    'TOKEN': '660a7f415b347a44404cd66e'
 }

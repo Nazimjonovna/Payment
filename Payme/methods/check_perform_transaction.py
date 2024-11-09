@@ -9,6 +9,7 @@ class CheckPerformTransaction:
             data=get_params(params)
         )
         serializer.is_valid(raise_exception=True)
+        print(serializer.data)
 
         response = {
             "result": {
