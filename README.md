@@ -1,6 +1,6 @@
-# Project Title
+# Payment
 
-A brief description of your project.
+Payment with payme and click with python django.
 
 ## Features
 
