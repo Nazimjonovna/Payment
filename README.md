@@ -16,7 +16,7 @@ A brief description of your project.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/repo-name.git
+   git clone https://github.com/Nazimjonovna/Payment.git
 
 2. Install libs
     ```bash
